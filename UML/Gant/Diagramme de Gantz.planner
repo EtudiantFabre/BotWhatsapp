@@ -32,46 +32,48 @@
     <task id="4" name="Diagramme de BPMN" note="" work="28800" start="20220112T000000Z" end="20220112T104000Z" work-start="20220112T080000Z" percent-complete="100" priority="0" type="normal" scheduling="fixed-work">
       <constraint type="must-start-on" time="20220112T000000Z"/>
     </task>
-    <task id="5" name="Diagramme de s&#xE9;quence" note="" work="28800" start="20220112T000000Z" end="20220112T120000Z" work-start="20220112T080000Z" percent-complete="100" priority="0" type="normal" scheduling="fixed-work">
+    <task id="5" name="Diagramme de s&#xE9;quence" note="" work="28800" start="20220112T000000Z" end="20220112T120000Z" work-start="20220112T080000Z" percent-complete="72" priority="0" type="normal" scheduling="fixed-work">
       <constraint type="must-start-on" time="20220112T000000Z"/>
     </task>
     <task id="6" name="Diagramme de classe" note="" work="403200" start="20220113T000000Z" end="20220119T142000Z" work-start="20220113T080000Z" percent-complete="60" priority="0" type="normal" scheduling="fixed-work">
       <constraint type="must-start-on" time="20220113T000000Z"/>
     </task>
-    <task id="7" name="G&#xE9;n&#xE9;ration de code Java" note="" work="28800" start="20220331T000000Z" end="20220331T170000Z" work-start="20220331T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+    <task id="7" name="G&#xE9;n&#xE9;ration de code Java" note="" work="26100" start="20220331T000000Z" end="20220331T161500Z" work-start="20220331T080000Z" percent-complete="70" priority="0" type="normal" scheduling="fixed-work">
       <constraint type="must-start-on" time="20220331T000000Z"/>
     </task>
-    <task id="8" name="G&#xE9;n&#xE9;ration du script SQL" note="" work="57600" start="20220331T000000Z" end="20220401T170000Z" work-start="20220331T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+    <task id="8" name="G&#xE9;n&#xE9;ration du script SQL" note="" work="57600" start="20220331T000000Z" end="20220401T170000Z" work-start="20220331T080000Z" percent-complete="60" priority="0" type="normal" scheduling="fixed-work">
       <constraint type="must-start-on" time="20220331T000000Z"/>
     </task>
-    <task id="9" name="G&#xE9;n&#xE9;ration des tests unitaires" note="" work="28800" start="20220331T000000Z" end="20220331T170000Z" work-start="20220331T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
-      <constraint type="must-start-on" time="20220331T000000Z"/>
+    <task id="9" name="G&#xE9;n&#xE9;ration des tests unitaires" note="" work="28800" start="20220331T161500Z" end="20220401T161500Z" work-start="20220331T161500Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="7" type="FS"/>
+      </predecessors>
     </task>
-    <task id="10" name="Codage des tests unitaires" note="" work="86400" duration="86400" start="20220404T000000Z" end="20220406T170000Z" work-start="20220404T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+    <task id="10" name="Codage des tests unitaires" note="" work="86400" start="20220404T000000Z" end="20220406T170000Z" work-start="20220404T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
       <constraint type="must-start-on" time="20220404T000000Z"/>
     </task>
-    <task id="11" name="D&#xE9;finition des tests d'int&#xE9;grations" note="" work="28800" duration="288000" start="20220404T000000Z" end="20220415T170000Z" work-start="20220404T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+    <task id="11" name="D&#xE9;finition des tests d'int&#xE9;grations" note="" work="28800" start="20220404T000000Z" end="20220415T170000Z" work-start="20220404T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
       <constraint type="must-start-on" time="20220404T000000Z"/>
     </task>
-    <task id="12" name="Modification des m&#xE9;thodes et des tests unitaires" note="" work="28800" duration="432000" start="20220407T000000Z" end="20220427T170000Z" work-start="20220407T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+    <task id="12" name="Modification des m&#xE9;thodes et des tests unitaires" note="" work="28800" start="20220407T000000Z" end="20220427T101640Z" work-start="20220407T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
       <constraint type="must-start-on" time="20220407T000000Z"/>
     </task>
-    <task id="13" name="D&#xE9;bugage du code" note="" work="28800" duration="144000" start="20220528T000000Z" end="20220603T170000Z" work-start="20220530T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+    <task id="13" name="D&#xE9;bugage du code" note="" work="28800" start="20220528T000000Z" end="20220603T170000Z" work-start="20220530T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
       <constraint type="must-start-on" time="20220528T000000Z"/>
     </task>
-    <task id="14" name="Test d'int&#xE9;gration" note="" work="28800" duration="144000" start="20220404T000000Z" end="20220408T170000Z" work-start="20220404T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+    <task id="14" name="Test d'int&#xE9;gration" note="" work="28800" start="20220404T000000Z" end="20220408T170000Z" work-start="20220404T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
       <constraint type="must-start-on" time="20220404T000000Z"/>
     </task>
-    <task id="15" name="DAO et XML" note="" work="28800" duration="288000" start="20220502T000000Z" end="20220513T170000Z" work-start="20220502T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+    <task id="15" name="DAO et XML" note="" work="28800" start="20220502T000000Z" end="20220513T170000Z" work-start="20220502T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
       <constraint type="must-start-on" time="20220502T000000Z"/>
     </task>
-    <task id="16" name="Controlleur( Recherche de l'API)" note="" work="432000" duration="288000" start="20220604T000000Z" end="20220617T170000Z" work-start="20220606T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+    <task id="16" name="Controlleur( Recherche de l'API)" note="" work="432000" start="20220604T000000Z" end="20220617T170000Z" work-start="20220606T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
       <constraint type="must-start-on" time="20220604T000000Z"/>
     </task>
     <task id="17" name="Vue" note="" work="144000" duration="144000" start="20220608T000000Z" end="20220614T170000Z" work-start="20220608T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
       <constraint type="must-start-on" time="20220608T000000Z"/>
     </task>
-    <task id="18" name="Rapport" note="" work="28800" duration="201600" start="20220502T000000Z" end="20220510T170000Z" work-start="20220502T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-duration">
+    <task id="18" name="Rapport" note="" work="28800" start="20220502T000000Z" end="20220511T090820Z" work-start="20220502T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
       <constraint type="must-start-on" time="20220502T000000Z"/>
     </task>
   </tasks>
