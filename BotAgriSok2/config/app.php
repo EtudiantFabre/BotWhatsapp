@@ -178,6 +178,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        //  Ajout pour l'installation de Spatie :
+        Spatie\Permission\PermissionServiceProvider::class,
+
     ],
 
     /*

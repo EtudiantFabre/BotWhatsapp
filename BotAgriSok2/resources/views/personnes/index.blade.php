@@ -1,5 +1,7 @@
+@extends('layouts.app')
+@section('content')
 <style>
-    table{
+    /*table{
         border-collapse: collapse;
         margin-left: 14rem;
         text-align: center;
@@ -26,9 +28,9 @@
         margin-top: -5px;
     }
     .supprimer{
-        /*position: absolute;
+        position: absolute;
         margin-top: -15px;
-        margin-left: 70px;*/
+        margin-left: 70px;
     }
     .boutton{
         height: 20px;
@@ -55,66 +57,76 @@
         align-content: center;
         alignment: center;
         margin: auto;
-        /*
+        
         position: absolute;
         margin-left: 21rem;
-        margin-top: 8px;*/
+        margin-top: 8px;
     }
     .modifier {
-        /*position: absolute;
-        margin-top: -15px;*/
-    }
+        position: absolute;
+        margin-top: -15px;
+    }*/
 </style>
-<body>
-<h1>Listes des Agriculteurs :</h1>
-<table>
-    <tr>
-        <th>Numéro de la personne</th>
-        <th>Nom</th>
-        <th>Prénom</th>
-        <th>Tél</th>
-        <th>Actions</th>
-    </tr>
+<body class="container bg-light shadow p-3 mb-5 bg-body rounded">
+    <h1 class="text-center fs-1">Listes des Personnes</h1>
+    <div class="">
+        <table class="table table-dange table-hover table-striped table-bordered border-primary text-center justify-content-center">
+            <tr class="table-active">
+                <thead class="table-dark">
+                    <th colspan="1" class="table-active">Numéro de la personne</th>
+                    <th>Nom</th>
+                    <th colspan="1" class="table-active">Prénom</th>
+                    <th>Tél</th>
+                    <th colspan="1" class="bg-danger">Actions sur chaque ligne</th>
+                </thead>
+            </tr>
 
-    @foreach($listepersonnes as $personne)
-        <tr>
+            @foreach($listepersonnes as $personne)
+                <tr>
 
-            <td>
-                {{$personne->num_personne}}
-            </td>
-            <td>
-                {{$personne->nom}}
-            </td>
-            <td>
-                {{$personne->prenom}}
-            </td>
-            <td>
-                {{$personne->tel}}
-            </td>
-            <td class="boutton">
-                <form action="{{route('personnes.edit', $personne->num_personne)}}" method="get" style="...">
-                    <input class="modifier" value="Modifier" type="submit">
-                </form>
-                <form action="{{route('personnes.destroy', $personne->num_personne)}}" method="post" onsubmit="return AccepterSuppression()" style="...">
-                    @csrf
-                    @method('delete')
-                    <input class="supprimer" value="Supprimer" type="submit">
-                </form>
-            </td>
-        </tr>
-    @endforeach
-</table>
-<h2>Actions suplementataire sur la base de donné :</h2>
+                    <td>
+                        {{$personne->num_personne}}
+                    </td>
+                    <td>
+                        {{$personne->nom}}
+                    </td>
+                    <td>
+                        {{$personne->prenom}}
+                    </td>
+                    <td>
+                        {{$personne->tel}}
+                    </td>
+                    <td>
+                        <div class="d-flex dropdown mr-1">
+                            <form action="{{route('personnes.edit', $personne->num_personne)}}" method="get" style="">
+                                <button type="submit" class="btn btn-outline-info">Modifier</button>
+                                <!--input class="modifier" value="Modifier" type="submit"-->
+                            </form>
+                            <form action="{{route('personnes.destroy', $personne->num_personne)}}" method="post" onsubmit="return AccepterSuppression()" style="">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+                                <!--input class="supprimer" value="Supprimer" type="submit"-->
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
+        </table>
+    </div>
+    <h2 class="text-center">Actions suplémentataire sur la base de donné :</h2>
 
-<form class="fleche" action="{{route('personnes.create')}}" method="get" style="...">
-    <!--h3>Créer un nouveau Administrateur :</h3-->
-    <button class="creer" type="submit">Créer une PERSONNE</button>
-</form>
+    <div class="container text-center mr-1 d-flex dropdown">
+        <form action="{{route('personnes.create')}}" style="" class="text-center">
+            <button type="submit" class="btn btn-outline-primary">Créer un administrateur</button>
+            <!--input class="creer" value="Créer" type="submit"-->
+        </form>
 
-<form class="fleche" action="{{--route('personnes.show', $listepersonne[0])--}}" method="get" style="...">
-    <!--h3>Afficher un Administrateur :</h3-->
-    <button class="creer" type="submit">Afficher une seul personne</button>
-</form>
+        <form action="{{--route('personnes.show', $listepersonne[0])--}}" class="text-center" style="">
+            <button type="submit" class="btn btn-outline-primary">Afficher un administrateur</button>
+            <!--input class="afficher" value="Afficher un produit" type="submit"-->
+        </form>
+    </div>
 </body>
 
 
@@ -128,3 +140,4 @@
         }
     }
 </script>
+@endsection
