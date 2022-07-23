@@ -1,0 +1,623 @@
+package com.ifnti;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+public class AgrisokMethode extends TelegramLongPollingBot {
+  //  private static String numeroAgriculteur;
+ //   private static String idTelegramAgriculteur;
+  // private int frequenceArrosageInitialCultur;
+   // private int frequenceArrosageDejaCultur;
+
+    
+
+    @Override
+    public void onUpdateReceived(Update update) {
+      
+
+       DAO base = new DAO();
+      //  System.out.println(base.chercherCulture());
+       ArrayList<String> cultures=base.chercherCulture();
+       ArrayList<String> tel=base.chercherTel();
+       ArrayList<String> agriculteur=base.chercherToutnumAgri();
+       ArrayList<String> nbre = new ArrayList<String>();
+        //System.out.println(agriculteur);
+       //ArrayList<Character> mot = new ArrayList<Character>();
+       nbre.add("0");
+       nbre.add("1");
+       nbre.add("2");
+       nbre.add("3");
+       nbre.add("4");
+       nbre.add("5");
+       nbre.add("5");
+       nbre.add("6");
+       nbre.add("7");
+       nbre.add("8");
+       nbre.add("9");
+      // System.out.println(tel);
+ 
+    //Ici quand la personne confirme qu'il partage sont numéro avec le bot 
+       if(update.getMessage().getContact()!=null){
+           //System.out.println(update.getMessage().getContact());
+            String nume=update.getMessage().getContact().getPhoneNumber();
+           // System.out.println(nume);
+            Long idT = update.getMessage().getContact().getUserId();
+            Long chat_id = update.getMessage().getContact().getUserId();
+            String IdTele = String.valueOf(idT);
+           
+    //        idTelegramAgriculteur=idTele;
+            StringBuilder sb = new StringBuilder(nume);
+            String res = nume.substring(0, 1);
+            if(res.equals("+")){
+                sb.deleteCharAt(0);
+                sb.deleteCharAt(0);
+                sb.deleteCharAt(0);
+                sb.deleteCharAt(0);
+            }
+            if(res.equals("2")){
+                sb.deleteCharAt(0);
+                sb.deleteCharAt(0);
+                sb.deleteCharAt(0);
+            }
+            String numero = String.valueOf(sb);
+            //System.out.println(numero);
+            //numeroAgriculteur=numero;
+           // System.out.println(numero);
+            // System.out.println(numero.equals("91161396"));
+           //   System.out.println(verifierTel(tel, numero));
+            //System.out.println(verifierTel(tel, nume));
+            //System.out.println(tel);
+            //System.out.println(nume);
+            //System.out.println(numero);
+            //System.out.println(sb);
+            //System.out.println(tel.contains(nume));
+            System.out.println(verifierTel(tel, numero));
+                //Ici je vérifie après avoir recupérer le num telegram et sont numéro je vérifie dans ma liste de personne que j'au recupérer dans la base si le nu existe je rentre 
+                
+                if(verifierTel(tel, numero)){
+                   
+                    Integer num = base.chercherNumAgri(numero);
+                    Integer numPersonneAgri = base.chercherNumPersonneAgri(numero);
+                    String numAgr = String.valueOf(num);
+
+                   
+                    String fr= "0";
+                    System.out.println(numAgr);
+                   System.out.println(verifierAgri(agriculteur, numAgr));
+                   if (verifierAgri(agriculteur, numAgr)){
+                        String numC = base.chercherNumCulturDeParcel(numAgr);   
+                        //System.out.println(numC);
+                        String frequence = base.chercherFrequence(numC);
+                        //System.out.println(frequence);
+                        StringBuilder sb1 = new StringBuilder(frequence);
+                        
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        
+                        int frequenceFinal;
+                        String frq = String.valueOf(sb1);
+                        int longueur = frq.length();
+                      
+                   
+                        for (int i = 0; i < longueur; i++) {
+                            //System.out.println(frq.charAt(i)); 
+                        
+                            String caractere=String.valueOf(frq.charAt(i));
+                            //mot.add(frq.charAt(i));
+                        // System.out.println(fr.charAt(i));
+                            if (nbre.contains(caractere)){
+                                fr =fr+caractere;
+                                
+                            
+
+                            }
+                      
+                        } 
+            
+                        if (base.chercherNumPersonAgriTele(IdTele)==null){
+                            frequenceFinal = Integer.valueOf(fr);
+                            //System.out.println(0);
+                        //    frequenceArrosageInitialCultur=frequenceFinal;
+                            Integer deja = 0;
+
+                            if(base.enregistementIdTele(numPersonneAgri, IdTele, frequenceFinal, deja)){
+                                SendMessage message = new SendMessage();
+                                message.setChatId(""+chat_id);
+                            message.setText("Inscription Terminée Vous recevrez desormais des notification");
+
+                            try {
+                                execute(message); // Call method to send the photo
+                            } catch (TelegramApiException e) {
+                                e.printStackTrace();
+                            }
+                            }
+                        }
+            
+/* 
+                        else if (!testfreq.equals(frequenceBd)) {
+                            base.moDifierFrequ(testfreq, idTele);
+                        }
+                        
+                         */
+                    }
+
+                } 
+                else {
+                    //System.out.println("sss");
+                    SendMessage message = new SendMessage();
+                    message.setChatId(""+chat_id);
+                    message.setText("Vous êtes dèja inscrit ou soit vous vous n'êtes pas inscrit au niveau du sit en tant qu'agriculteur");
+                                
+                    try {
+                        execute(message); 
+                    } catch (TelegramApiException e) {
+                        e.printStackTrace();
+                    }
+                }      
+        }
+      // int chois=0;
+// TODO Auto-generated method stub
+       // System.out.println(update);
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            String message_text = update.getMessage().getText();
+            Long chat_id = update.getMessage().getChatId();
+            if (message_text.equals("/salut")) {
+                        SendMessage message = new SendMessage();
+                        message.setChatId(""+chat_id);
+                        message.setText("Veuillez selectionner une colonne");
+
+                        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+
+                        List<KeyboardRow> keyboard = new ArrayList<>();
+
+                        KeyboardRow row = new KeyboardRow();
+
+                        row.add("Demander conseil sur une culutre");
+                        keyboard.add(row);
+
+                        row = new KeyboardRow();
+
+                        //Enregistrer une nouvelle culture
+                        row.add("Enregistrer une culture prartiquer");
+                        // Add the second row to the keyboard
+                        keyboard.add(row);
+                        row = new KeyboardRow();
+                        // Set each button for the second line
+                        //Enregistrer une nouvelle culture
+                        row.add("Demande de reconnaissance de statut d'agronomme");
+                        // Add the second row to the keyboard
+                        keyboard.add(row);
+
+                        row = new KeyboardRow();
+                        // Set each button for the second line
+                        //Enregistrer une nouvelle culture
+                        row.add("Terminer sont inscription en tant que Agriculteur");
+                        // Add the second row to the keyboard
+                        keyboard.add(row);
+                            
+                        // Create another keyboard row
+                        row = new KeyboardRow();
+                        // Set each button for the second line
+                        //Enregistrer une nouvelle culture
+                            
+                        row.add("Enregistrer une nouvelle culture");
+                        row.add("Proposer Modification sur une culture");
+                        // Add the second row to the keyboard
+                        keyboard.add(row);
+                        // Set the keyboard to the markup
+                        keyboardMarkup.setKeyboard(keyboard);
+                        // Add it to the message
+                        message.setReplyMarkup(keyboardMarkup);
+                        try {
+                                execute(message); // Sending our message object to user
+                        } catch (TelegramApiException e)
+                            {
+                                e.printStackTrace();
+                            }
+            }else if (message_text.equals("Enregistrer une nouvelle culture")) {
+                        SendMessage message = new SendMessage();
+                        message.setChatId(""+chat_id);
+                        message.setText("veuillez aller sur le liens \nhttp://192.168.60.146:8000/ ");
+                        
+                        try {
+                            execute(message); // Call method to send the photo
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+            } 
+            else if (message_text.equals("Proposer Modification sur une culture")) {
+                        SendMessage message = new SendMessage();
+                        message.setChatId(""+chat_id);
+                        message.setText("veuillez aller sur le liens \nhttp://192.168.60.146:8000/");
+                        
+                        try {
+                            execute(message); // Call method to send the photo
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+            }
+            else if (message_text.equals("Terminer sont inscription en tant que agriculteur")) {
+                SendMessage sendMessage = new SendMessage();
+                sendMessage.setChatId(""+chat_id);
+                ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+                sendMessage.setReplyMarkup(replyKeyboardMarkup);
+                sendMessage.setText("veuillez selection svp");
+                replyKeyboardMarkup.setSelective(true);
+                replyKeyboardMarkup.setResizeKeyboard(true);
+                replyKeyboardMarkup.setOneTimeKeyboard(true);
+                
+                // new list
+                List<KeyboardRow> keyboard = new ArrayList<>();
+            
+                // first keyboard line
+                KeyboardRow keyboardFirstRow = new KeyboardRow();
+                KeyboardButton keyboardButton = new KeyboardButton();
+                keyboardButton.setRequestContact(true);
+                keyboardButton.setText("Vouler vous etre enregistrer");
+                keyboardFirstRow.add(keyboardButton);
+                KeyboardRow row = new KeyboardRow();
+                row = new KeyboardRow();
+                // Set each button for the second line
+                //Enregistrer une nouvelle culture
+                row.add("menu principal");
+                // Add the second row to the keyboard
+                keyboard.add(row);
+    
+
+                // add array to list
+                keyboard.add(keyboardFirstRow);
+
+                // add list to our keyboard
+                replyKeyboardMarkup.setKeyboard(keyboard);
+                            try {
+                                execute(sendMessage); // Call method to send the photo
+                            } catch (TelegramApiException e) {
+                                e.printStackTrace();
+                            }
+                }
+            else if (message_text.equals("Enregistrer une culture prartiquer")) {
+                        SendMessage message = new SendMessage();
+                        message.setChatId(""+chat_id);
+                        message.setText("veuillez aller sur le liens \nhttp://192.168.60.146:8000/");
+                        
+                        try {
+                            execute(message); // Call method to send the photo
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+            }  
+            else if (message_text.equals("Demande de reconnaissance de statut d'agronomme")) {
+                        SendMessage message = new SendMessage();
+                        message.setChatId(""+chat_id);
+                        message.setText("veuillez aller sur le liens \nhttp://192.168.60.146:8000/");
+                        
+                        try {
+                            execute(message); // Call method to send the photo
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+            }
+            else if (message_text.equals("menu principal")) {
+                        SendMessage message = new SendMessage();
+                        message.setChatId(""+chat_id);
+                        message.setText("Veuillez selectionner une colonne");
+                            // Create ReplyKeyboardMarkup object
+                            ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+                            // Create the keyboard (list of keyboard rows)
+                            List<KeyboardRow> keyboard = new ArrayList<>();
+                            // Create a keyboard row
+                            KeyboardRow row = new KeyboardRow();
+                            // Set each button, you can also use KeyboardButton objects if you need something else than text
+                            row.add("Demander conseil sur une culutre");
+                        
+                        
+                            // Add the first row to the keyboard
+                            keyboard.add(row);
+
+                            row = new KeyboardRow();
+                            // Set each button for the second line
+                            //Enregistrer une nouvelle culture
+                            row.add("Enregistrer une culture prartiquer");
+                            // Add the second row to the keyboard
+                            keyboard.add(row);
+                            row = new KeyboardRow();
+                            // Set each button for the second line
+                            //Enregistrer une nouvelle culture
+                            row.add("Terminer sont inscription en tant que agriculteur");
+                            // Add the second row to the keyboard
+                            keyboard.add(row);
+                                
+                            // Create another keyboard row
+                            row = new KeyboardRow();
+                            // Set each button for the second line
+                            //Enregistrer une nouvelle culture
+                            row.add("Demande de reconnaissance de statut d'agronomme");
+                            // Add the second row to the keyboard
+                            keyboard.add(row);
+                            
+                            // Create another keyboard row
+                            row = new KeyboardRow();
+                            // Set each button for the second line
+                            //Enregistrer une nouvelle culture
+                            
+                            row.add("Enregistrer une nouvelle culture");
+                            row.add("Proposer Modification sur une culture");
+                            // Add the second row to the keyboard
+                            keyboard.add(row);
+                            // Set the keyboard to the markup
+                            keyboardMarkup.setKeyboard(keyboard);
+                            // Add it to the message
+                            message.setReplyMarkup(keyboardMarkup);
+
+
+
+
+
+                            
+                            try {
+                                execute(message); // Sending our message object to user
+                            } catch (TelegramApiException e) {
+                                e.printStackTrace();
+                            }
+                    }  
+                    else if (message_text.equals("Ma culture ne se trouve pas dans la liste")) {
+                        SendMessage message = new SendMessage();
+                        message.setChatId(""+chat_id);
+                        message.setText("Désolé nous ne pouvons pas vous aider. \nMerci d'avoir utilisé le BOT-AGRI-SOK ");
+                        
+                        try {
+                            execute(message); // Call method to send the photo
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+         
+                    }  
+                    else if (verifierCultu(cultures, message_text)) {
+                        SendMessage message = new SendMessage();
+                        message.setChatId(""+chat_id);
+                        String rendement = base.chercherRendemeString(message_text);
+                        String densite = base.chercherdensiter(message_text);
+                        String frequence = base.chercherFrequenceArrosage(message_text);
+                        //System.out.println(frequence);
+                        message.setText("la culture "+message_text+"\n À une densité par semestre estimé à: "+ densite +"\nÀ un rendement de: " + rendement +"\n Fréquence d'arrosage par mois: " + frequence);
+                        
+                        try {
+                            execute(message); // Call method to send the photo
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                      
+                    //Demander conseil sur une culutre
+                    else if (message_text.equals("Demander conseil sur une culutre")) {
+                        SendMessage message = new SendMessage();
+                        message.setChatId(""+chat_id);
+                        message.setText("Veuillez selectionner votre culture");
+                            ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+                            List<KeyboardRow> keyboard = new ArrayList<>();
+                            KeyboardRow row = new KeyboardRow();
+                            row.add("Ma culture ne se trouve pas dans la liste");                                                
+                            keyboard.add(row);
+                            row = new KeyboardRow();
+                            // Set each button for the second line
+                            //Enregistrer une nouvelle culture
+                            row.add("menu principal");
+                            // Add the second row to the keyboard
+                            keyboard.add(row);
+                          
+                            
+                          
+                            for(String s : cultures){
+                                row = new KeyboardRow();
+                                row.add(s);
+                                keyboard.add(row);
+                               
+                               }                            
+                            keyboardMarkup.setKeyboard(keyboard);
+                            message.setReplyMarkup(keyboardMarkup);
+                            try {
+                                execute(message); // Sending our message object to user
+                            } catch (TelegramApiException e) {
+                                e.printStackTrace();
+                            }
+
+
+                       
+                    }else {
+                        // Unknown command
+                        SendMessage message = new SendMessage();
+                        message.setChatId(""+chat_id);
+                        message.setText("commande inconnue \npour démarrer  veuillez taper la commande de démarage /salut ");
+                                      //  .setText("Unknown command");
+                        try {
+                            execute(message); // Sending our message object to user
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+                    }  
+                
+            }
+
+
+            
+
+        }
+        
+    
+
+    @Override
+    public String getBotUsername() {
+        // TODO Auto-generated method stub
+        return "AGRISOK_bot";
+    }
+
+    @Override
+    public String getBotToken() {
+        // TODO Auto-generated method stub
+        return "5340210420:AAGQlaHBCiXTZPRNaxhqHpY0bSejqhSct5s";
+    }
+
+
+
+    public Boolean verifierCultu(ArrayList<String> culture,String nom){
+        if(culture.contains(nom)){
+            return true;
+        }
+
+        return false;
+    }
+
+    public Boolean verifierTel(ArrayList<String> tel,String num){
+        
+        if(tel.contains(num)){
+           
+            return true;
+        }
+
+        return false;
+    }
+
+    public Boolean verifierAgri(ArrayList<String> agriculteurs,String num){
+        
+        if(agriculteurs.contains(num)){
+           
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public int trouverNombre(String frequence){
+        ArrayList<String> nbre = new ArrayList<String>();
+       //ArrayList<Character> mot = new ArrayList<Character>();
+       nbre.add("0");
+       nbre.add("1");
+       nbre.add("2");
+       nbre.add("3");
+       nbre.add("4");
+       nbre.add("5");
+       nbre.add("5");
+       nbre.add("6");
+       nbre.add("7");
+       nbre.add("8");
+       nbre.add("9");
+        StringBuilder sb1 = new StringBuilder(frequence);
+        String fr= "0";
+                        
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        sb1.deleteCharAt(0);
+                        
+                       
+                        String frq = String.valueOf(sb1);
+                        int longueur = frq.length();
+                      
+                   
+                        for (int i = 0; i < longueur; i++) {
+                            //System.out.println(frq.charAt(i)); 
+                        
+                            String caractere=String.valueOf(frq.charAt(i));
+                            //mot.add(frq.charAt(i));
+                        // System.out.println(fr.charAt(i));
+                            if (nbre.contains(caractere)){
+                                fr =fr+caractere;
+                                
+                            
+
+                            }
+                        }
+                        Integer frequ= Integer.valueOf(fr);
+                      return frequ;
+
+    }
+
+    public void envoyerNotification(){
+        DAO base2 = new DAO();
+        ArrayList<String> idAgri =base2.chercherIdAgriculteur();
+        if(idAgri.size()>0){
+            
+            for (String chat_id : idAgri) {
+                Integer numP = base2.chercherNumPersonAgriTele(chat_id);
+                String tele= base2.chercherTelephone(numP);
+                System.out.println(tele);
+                //Integer numAgri = base2.chercherNumAgri(tele);
+               // System.out.println(numAgri);
+               // String agri=String.valueOf(numAgri);
+              //  System.out.println(agri);
+                //String numCU= base2.chercherNumCulturDeParcel(agri);
+                //String frq= base2.chercherFrequence(numCU);
+               // int frequen=trouverNombre(frq);
+                //System.out.println(frequen);
+
+               // Integer frequenceBd=base2.chercherNbreArrIdT(chat_id);
+               //System.out.println(frequenceBd);
+                //System.out.println(frequen);
+/* 
+                if (!frequenceBd.equals(frequen)) {
+                  //  System.out.println(!frequenceBd.equals(frequen));
+                    base2.moDifierFrequ(frequen, chat_id);
+                    base2.moDifierDate( chat_id);
+
+                }
+          
+
+                
+                SendMessage message = new SendMessage();
+                message.setChatId(""+chat_id);
+                message.setText("vous devez aroser");
+                
+                try {
+                    execute(message); // Call method to send the photo
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }*/
+              
+            }
+        }
+        
+    }
+
+   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

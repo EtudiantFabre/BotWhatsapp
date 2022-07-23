@@ -1,0 +1,48 @@
+frequenceArrosageDejaCultur=base.chercherFrequenceTableId(idTelegramAgriculteur);
+
+else if (frequenceArrosageDejaCultur!=0) {
+    SendMessage message = new SendMessage();
+    message.setChatId(""+chat_id);
+    message.setText("Veuiller aller sur le liens \nwww.botagrisok.com");
+    
+    try {
+        execute(message); // Call method to send the photo
+    } catch (TelegramApiException e) {
+        e.printStackTrace();
+    }
+
+
+
+
+
+
+
+
+
+
+    public boolean enregistementIdTele(Integer num, String id,Integer nbre  ,Integer arrose){
+
+        LocalDate todaysDate = LocalDate.now();
+        String date=String.valueOf(todaysDate);
+
+        //return (nom=="a" && passw =="n");
+    try{
+        
+    Statement transaction = connection.createStatement();
+    //System.out.println(v);
+
+          
+          
+    String requete = String.format("insert into id_telegram(num_personne, id_de_telegram, nbre_arrosage,nbre_deja_arroser,created_at) values(%d, '%s', %d,%d,'%s');", num, id, nbre,arrose,date);
+    //System.out.println(requete);
+    transaction.executeUpdate(requete);
+        // System.out.println(requete2);
+        return true;
+
+           
+
+                   }catch(SQLException exept){
+            exept.printStackTrace();
+        } 
+    return false;
+}
